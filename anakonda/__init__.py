@@ -1,1 +1,1 @@
-from anakonda.anakonda import create_app
+from .anakonda import create_app

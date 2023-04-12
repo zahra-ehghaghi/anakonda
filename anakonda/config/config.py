@@ -6,9 +6,9 @@ class Config:
 
     DEBUG = bool(int(environ.get("ANAKONDA_API_DEBUG", "0")))
 
-    TEST = DEBUG
+    TESTING = DEBUG
 
-    SECRET_KEY = environ.get("ANAKONDA_API_SECRET_KEY", "sekretkey")
+    SECRET_KEY = environ.get("ANAKONDA_API_SECRET_KEY", "secretkey")
 
     JSONIFY_PRETTYPRINT_REGULAR = bool(
         int(environ.get("ANAKONDA_API_JSON_PRETTYPRINT", "0"))
