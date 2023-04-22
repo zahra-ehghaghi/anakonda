@@ -1,1 +1,1 @@
-from .task import TaskModel
+from .task import Task
