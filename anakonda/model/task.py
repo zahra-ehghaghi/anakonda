@@ -16,4 +16,6 @@ class Task(db.Model):
     status = db.Column(db.String(32), nullable=False)
 
     def __repr__(self):
-        return "f<Task id='{self.id}', name='{self.name}' "
+        return f"<Task id='{self.id}', name='{self.name}'>"
+
+
