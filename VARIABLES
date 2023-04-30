@@ -1,0 +1,15 @@
+ docker run --name mysql -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=anakonda -e MYSQL_USER=anakonda -e MYSQL_PASSWORD=anakonda --rm mysql:8
+ 
+ docker exec -it mysql mysql -uanakonda -p
+
+
+ 
+export ANAKONDA_API_DATABASE_URI=mysql+pymysql://anakonda:anakonda@localhost:3306/anakonda
+
+
+export ANAKONDA_API_TIMEZONE=Asia/Tehran
+
+export ANAKONDA_API_DEBUG=1
+
+export ANAKONDA_API_ENV=development
+

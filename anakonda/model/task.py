@@ -17,5 +17,3 @@ class Task(db.Model):
 
     def __repr__(self):
         return f"<Task id='{self.id}', name='{self.name}'>"
-
-
