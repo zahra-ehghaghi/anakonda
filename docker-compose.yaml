@@ -1,0 +1,39 @@
+version : "3"
+
+services:
+  anakonda:
+    build: .
+    image: anakonda:latest
+    restart: unless-stopped
+    env_file: .env
+    expose:
+      - 8080/tcp
+    networks:
+      - edge
+      - db
+#   public port in single mode without loadbalancer            
+#    ports:
+#      - 8077:8080/tcp
+  mysql:
+    image: mysql:8
+    restart: unless-stopped
+    env_file: .env
+    expose:
+      - 3306/tcp
+    networks:
+      - db
+    volumes:
+      - mysqldata:/var/lib/mysql
+networks:
+  edge:
+    external: true
+  db:
+
+volumes:
+  mysqldata:
+
+
+
+
+
+
