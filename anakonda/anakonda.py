@@ -8,9 +8,10 @@ from .config import Config
 
 db = SQLAlchemy()
 mg = Migrate()
+ma = Marshmallow()
+
 apiv1_bp = Blueprint("apiv1_bp", __name__, url_prefix="/api/v1")
 apiv1 = Api(apiv1_bp)
-ma = Marshmallow()
 
 from . import resource
 

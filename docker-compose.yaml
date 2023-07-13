@@ -12,8 +12,9 @@ services:
       - edge
       - db
 #   public port in single mode without loadbalancer            
-#    ports:
+    ports:
 #      - 8077:8080/tcp
+      - 8080:8080/tcp
   mysql:
     image: mysql:8
     restart: unless-stopped
