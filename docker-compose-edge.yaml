@@ -1,0 +1,18 @@
+version : "3"
+
+services:
+  anakonda:
+    networks:
+      - edge
+      - db
+
+networks:
+  edge:
+    external: true
+  db:
+
+
+
+
+
+
