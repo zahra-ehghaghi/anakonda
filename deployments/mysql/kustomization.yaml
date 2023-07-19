@@ -1,0 +1,4 @@
+resources:
+  - secret.yml 
+  - service.yml
+  - statefullset.yml

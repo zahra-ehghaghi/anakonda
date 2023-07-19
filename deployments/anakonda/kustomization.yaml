@@ -1,0 +1,6 @@
+resources:
+  - secret.yml 
+  - configmap.yml
+  - service.yml
+  - deployment.yml
+  - ingress.yml
