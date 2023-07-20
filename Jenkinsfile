@@ -31,7 +31,7 @@ pipeline{
 		   retry(5) {
 			sh "sleep $i"
 			i *=2
-                        sh "flask db upgrade 2"
+                        sh "flask db upgrade"
     		   }
                   coverageStatus = sh(
 			script:	"coverage run -m pytest --junit-xml=anakonda-pytest-${BUILD_ID}.xml",
