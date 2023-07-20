@@ -61,6 +61,17 @@ pipeline{
       steps{
 	script {
           anakondaImage.push("latest")
+	  gitTag = sh(script: "git tag --points-at ${gitCommit}", returnStdout: true).trim()
+	  if (gitTag.startWith("v")){
+	     version = gitTag.minus("v")
+	     anakondaFullVersion = version
+	     version = gitTag.split("\\.")
+  	     anakondaMajorVersion = version[0]
+	     anakondaMajorMinorVersion = version[0]+ "." + version[1]
+	     anakondaImage.push("anakondaFullVersion")
+             anakondaImage.push("anakondaMajorVersion")
+	     anakondaImage.push("anakondaMajorMinorVersion")
+	  }
         }
       }
    }
