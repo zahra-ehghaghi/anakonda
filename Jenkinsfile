@@ -59,7 +59,7 @@ pipeline{
     }
    stage("Release"){
       steps{
-	Script {
+	script {
           anakondaImage.push("latest")
         }
       }
