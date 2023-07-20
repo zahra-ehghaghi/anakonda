@@ -10,7 +10,14 @@ pipeline{
    stage("Build"){
      steps{
 	 script{
-		anakondaImage = docker.build("anakonda:jenkins-pipeline-$BUILD_ID")
+               gitBranch = sh(script: "git branch --show-current", returnStdout:true).trim()
+		if (gitBranch == ""){
+		 	gitBranch="$BRANCH_NAME"
+		}
+		gitCommit = sh(script: "git rev-parse HEAD", returnStdout:true).trim()
+		anakondaImage = docker.build("192.168.56.10/anakonda:jenkins-pipeline-$BUILD_ID",
+		"--build-arg GIT_BRANCH=${gitBranch}  --build-arg GIT_COMMIT=${gitCommit}
+		--build-arg BUILD_TAG=${BUILD_TAG} --build-arg BUILD_ID=${BUILD_ID} .")
 	}
      }
    }
@@ -51,7 +58,13 @@ pipeline{
 	} 
       }
     }
-
+   stage("Release"){
+      steps{
+	Script {
+          anakondaImage.push("latest")
+        }
+      }
+   }
   }
   post{
    always{ 
