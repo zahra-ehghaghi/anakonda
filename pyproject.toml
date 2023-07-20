@@ -6,3 +6,5 @@ addopts = "-xv"
 source = ["anakonda"]
 command_line = "-m pytest"
 branch = true
+junit_logging= "all"
+junit_family= "xunit2"
