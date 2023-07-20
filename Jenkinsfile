@@ -54,7 +54,7 @@ pipeline{
 
   }
   post{
-   alway{ 
+   always{ 
     deleteDir()
    }
   }
