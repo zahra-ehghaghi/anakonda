@@ -10,17 +10,14 @@ pipeline{
    stage("Build"){
      steps{
 	 script{
-               gitBranch = sh(script: "git branch --show-current", returnStdout:true).trim()
-		if (gitBranch == ""){
-		 	gitBranch="$BRANCH_NAME"
-		}
+                gitBranch = sh(script: "git  rev-parse --abbrev-ref HEAD", returnStdout:true).trim()
+                gitTag = sh(script: "git tag --points-at HEAD", returnStdout: true).trim()
 		gitCommit = sh(script: "git rev-parse HEAD", returnStdout:true).trim()
 		anakondaImage = docker.build("192.168.56.10/anakonda:jenkins-pipeline-$BUILD_ID",
-		"--build-arg GIT_BRANCH=${gitBranch}  --build-arg GIT_COMMIT=${gitCommit} --build-arg BUILD_TAG=${BUILD_TAG} --build-arg BUILD_ID=${BUILD_ID} .")
+		"--build-arg GIT_BRANCH=${gitBranch}  --build-arg GIT_COMMIT=${gitCommit} --build-arg BUILD_TAG=${BUILD_TAG}  --build-arg GIT_TAG=${gitTag}  --build-arg BUILD_ID=${BUILD_ID} .")
 	}
      }
    }
-
    stage("Test"){
       steps{
 	script {
@@ -61,17 +58,18 @@ pipeline{
       steps{
 	script {
           anakondaImage.push("latest")
-	  gitTag = sh(script: "git tag --points-at ${gitCommit}", returnStdout: true).trim()
-	  if (gitTag.startWith("v")){
-	     version = gitTag.minus("v")
-	     anakondaFullVersion = version
-	     version = gitTag.split("\\.")
-  	     anakondaMajorVersion = version[0]
-	     anakondaMajorMinorVersion = version[0]+ "." + version[1]
-	     anakondaImage.push("anakondaFullVersion")
-             anakondaImage.push("anakondaMajorVersion")
-	     anakondaImage.push("anakondaMajorMinorVersion")
-	  }
+          if (gitTag != ""){
+	    if (gitTag.startsWith("v")){
+	       gitTag = gitTag.minus("v")
+	       anakondaFullVersion = gitTag
+	       version = gitTag.split("\\.")
+  	       anakondaMajorVersion = version[0]
+	       anakondaMajorMinorVersion = version[0]+ "." + version[1]
+	       anakondaImage.push("anakondaFullVersion")
+               anakondaImage.push("anakondaMajorVersion")
+	       anakondaImage.push("anakondaMajorMinorVersion")
+	   }
+         }
         }
       }
    }
