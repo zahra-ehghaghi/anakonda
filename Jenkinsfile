@@ -27,8 +27,8 @@ pipeline{
 			i *=2
                         sh "flask db upgrade 2> /dev/null"
     		   }
-                  coverageStatus = sh (
-			script:	"coverage run -m pytest --junit-xml=anakonda-pytest-${BUILD_ID}.xml"
+                  coverageStatus = sh(
+			script:	"coverage run -m pytest --junit-xml=anakonda-pytest-${BUILD_ID}.xml",
 			returnStatus: true 
 		      )
 	           juint "anakonda-pytest-${BUILD_ID}.xml"
