@@ -35,8 +35,8 @@ pipeline{
 		   sh "coverage html"
 		   sh "coverage xml"
 	           cobertura(
-			autoUpdateHealth: true
-			autoUpdateStability: true
+			autoUpdateHealth: true,
+			autoUpdateStability: true,
 			coberturaReportFile: "coverage.xml"
 		   )
 		  archiveArtifacts(
