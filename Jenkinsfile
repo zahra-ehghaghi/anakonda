@@ -22,12 +22,21 @@ pipeline{
           mysql -> 
 		anakondaImage.inside("--name anakonda-app-$BUILD_ID --link ${mysql.id} -e  ANAKONDA_API_DATABASE_URI=mysql+pymysql://anakonda:anakonda@anakonda-mysql-${BUILD_ID}:3306/test -e ANAKONDA_API_ENV=test -e ANAKONDA_API_DEBUG=1 --entrypoint=''"){
 		   i = 1
-		   retry(10) {
+		   retry(5) {
 			sh "sleep $i"
 			i *=2
-                        sh "flask db upgrade"
+                        sh "flask db upgrade 2> /dev/null"
     		   }
-                   sh "coverage run"
+                  coverageStatus = sh (
+			script:	"coverage run -m pytest --junit-xml=anakonda-pytest-${BUILD_ID}.xml"
+			returnStatus: true 
+		      )
+	           juint "anakonda-pytest-${BUILD_ID}.xml"
+		   sh "coverage html"
+		   sh "coverage xml"
+	           if (coverageStatus != 0){
+                	sh "false"  
+	           }  
          	}
 	  }
 	} 
