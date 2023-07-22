@@ -34,7 +34,7 @@ pipeline{
 			script:	"coverage run -m pytest --junit-xml=anakonda-pytest-${BUILD_ID}.xml",
 			returnStatus: true 
 		      )
-	           juint "anakonda-pytest-${BUILD_ID}.xml"
+	           junit "anakonda-pytest-${BUILD_ID}.xml"
 		   sh "coverage html"
 		   sh "coverage xml"
 	           cobertura(
