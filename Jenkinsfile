@@ -12,7 +12,7 @@ pipeline{
 		changelog: true,
 		poll: true
 	     )
-	  load"config.groovy"
+	  load "config.groovy"
 	  sh  "env"
 	}
 	
