@@ -4,7 +4,7 @@ pipeline{
     stage("Prepare"){
       steps{
 	load "jenkins/config/groovy"
-	dir(pwd(tmp:true){
+	dir(pwd(tmp: true)){
 	  git(
  		url: "$ANAKONDA_API_CI_CONFIG_GIT_URL",
 		branch: "$ANAKONDA_API_CI_CONFIG_GIT_BRANCH",
