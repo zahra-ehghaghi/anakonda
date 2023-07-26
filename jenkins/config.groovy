@@ -1,4 +1,4 @@
-ANAKONDA_API_CI_CONFIG_GIT_URL="http://192.168.56.10:3000/zahra/anakonda-ci-configs.git"
+ANAKONDA_API_CI_CONFIG_GIT_URL="http://192.168.1.54:3000/zahra/anakonda-ci-configs.git"
 ANAKONDA_API_CI_CONFIG_GIT_BRANCH="master"
 ANAKONDA_API_CI_CONFIG_GIT_CREDENTIAL="zahra_gitae_user"
 
