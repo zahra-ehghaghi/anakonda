@@ -40,7 +40,7 @@ pipeline{
 		   retry(5) {
 			sh "sleep $i"
 			i *=2
-                        sh "flask db upgrade"
+                        sh "flask db upgrade 2> /dev/null"
     		   }
                   coverageStatus = sh(
 			script:	"coverage run -m pytest --junit-xml=anakonda-pytest-${BUILD_ID}.xml",
@@ -79,6 +79,7 @@ pipeline{
               anakondaImage.push("latest")
 	 }
          if("$ANAKONDA_API_BRANCH_IMAGE_RELEASE" == "true"){
+	     sh "${gitBranch}"
               anakondaImage.push(gitBranch)
          }
           if (gitTag != ""){
@@ -97,6 +98,19 @@ pipeline{
 	      }
 	   }
          }
+	if ("$ANAKONDA_API_TRIGGER_DEV" =="true"){
+	build (
+                wait: false,
+                propagate: false,
+                job: 'anakonda-cd-pipeline',
+                waitForStart: true,
+                parameters: [
+                string(name: 'ENV', value: 'development'),
+                string(name: 'IMAGE_NAME', value: "${ANAKONDA_API_DOCKER_REGISTERY_ADDRESS}/${ANAKONDA_API_IMAGE_NAME}"), 
+                string(name: 'IMAGE_TAG', value: "${ANAKONDA_API_DEV_IMAGE_TYPE}" == "stable"? "${anakondaMajorVersion}":"latest")]
+	      )
+	
+	}
         }
       }
    }
@@ -107,3 +121,4 @@ pipeline{
    }
   }
 }
+
