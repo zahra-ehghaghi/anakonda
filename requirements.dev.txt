@@ -1,5 +1,6 @@
 alembic==1.12.1
 aniso8601==9.0.1
+async-timeout==4.0.3
 black==23.11.0
 blinker==1.7.0
 boolean.py==4.0
@@ -53,6 +54,7 @@ pytest==7.4.3
 pytest-order==1.1.0
 python-dotenv==1.0.0
 pytz==2023.3.post1
+redis==5.0.1
 requests==2.31.0
 rich==13.6.0
 simplejson==3.19.2
