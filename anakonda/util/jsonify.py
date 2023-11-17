@@ -11,6 +11,7 @@ STATUS_MESSAGES = {
     107: "Resource not found",
     108: "Runtime not available",
     109: "Resource not updatable",
+    110: "Redis error",
 }
 
 

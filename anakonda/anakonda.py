@@ -10,6 +10,7 @@ from .config import Config
 db = SQLAlchemy()
 mg = Migrate()
 ma = Marshmallow()
+print (Config.REDIS_CONFIG)
 re = Redis(host=Config.REDIS_CONFIG[3],
            port=Config.REDIS_CONFIG[4],
            username=Config.REDIS_CONFIG[1] if Config.REDIS_CONFIG[1] !=  "none" else  None,

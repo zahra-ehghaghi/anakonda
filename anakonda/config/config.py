@@ -30,3 +30,5 @@ class Config:
         "^(.*):(.*)\@(.+):([1-9]+[0-9]*)\/([0-9]|10|11|12|13|14|15)$",
         environ.get("ANAKONDA_API_REDIS_URI", "")
     )
+    REDIS_CHANNELS ={"NEW_TASKS": "anakonda-new-task",}
+    

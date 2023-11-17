@@ -6,6 +6,7 @@ from anakonda.decorator import json_required
 from anakonda.model import Task
 from anakonda.schema.apiv1 import TaskSchema
 from anakonda.util import jsonify, now
+from anakonda.anakonda import re
 
 
 class TaskController:
@@ -68,6 +69,10 @@ class TaskController:
         except:
             db.session.rollback()
             return jsonify(status=500, code=106)
+        try:
+           re.publish(Config.REDIS_CHANNELS["NEW_TASKS"],task.id)
+        except:           
+            return jsonify(status=500, code=110)        
         return jsonify(task_schema.dump(task), status=201)
 
     @json_required
