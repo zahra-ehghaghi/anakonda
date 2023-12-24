@@ -4,7 +4,8 @@ from rq import Queue
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.ext.automap import automap_base
-from system import exit
+from docker import from_env as docker_from_env
+from sys import exit
 
 
 

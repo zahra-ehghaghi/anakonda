@@ -8,8 +8,7 @@ Task = mapper.classes.tasks
 
 class TaskJobController:
    
-     def run_task(task_id):
-          pass
+     def run_task(task_id):          
           print(task_id)
           task = db.query(Task).get(task_id)
           if task is not None:
@@ -23,10 +22,10 @@ class TaskJobController:
                    task.last_update_at = now()
                    db.commit()
               if task.runtime == "docker" :
-                   container= docker.container.run(
-                        image:task.image,
+                   container= docker.containers.run(
+                        image=task.image,
                         command=task.script,
-                        detached = True,
+                        detach = True,
                         tty=False
                    )
                    container_status = docker.containers.get(container.id).attrs["State"]["Running"]
