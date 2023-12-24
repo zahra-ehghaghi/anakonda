@@ -2,9 +2,11 @@ from ..controller import db , mapper, docker
 from controller.config import Config
 from controller.util import now
 from  time import sleep
+from kubernetes import client
 
 
 Task = mapper.classes.tasks
+job_v1_client = client.BatchV1Api()
 
 class TaskJobController:
    
@@ -43,4 +45,26 @@ class TaskJobController:
                    task.result = container_result
                    db.commit()
               if task.runtime == "kubernetes" :
-                   pass
+                   job = job_v1_client.create_namespaced_job(
+                        namespace=task.namespace,
+                        body=client.V1Job(
+                             metadata=client.V1ObjectMeta(
+                                  generate_name=task.name+"-",
+                                  labels={"controller":"anakonda"}
+                                  ),
+                             spec=client.V1JobSpec(
+                                completions=1,
+                                parallelism=1,
+                                template=client.V1PodTemplateSpec(
+                                     metadata=client.V1ObjectMeta(),
+                                     spec=client.V1PodSpec(
+                                               restart_policy="Never",
+                                               containers=[client.V1Container(
+                                                    name=task.name,
+                                                    command=["sh","-c",task.script],
+                                                    image=task.image)])
+                                   )
+                              )
+                          )
+                    )
+                   

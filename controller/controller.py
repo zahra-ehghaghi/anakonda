@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.ext.automap import automap_base
 from docker import from_env as docker_from_env
 from sys import exit
+from kubernetes import config
 
 
 
@@ -24,7 +25,7 @@ db = Session(engine)
 docker = docker_from_env()
 if docker.ping() is False:
     exit(1)
-
+config.load_kube_config()
 
 from .job import TaskJobController
 
