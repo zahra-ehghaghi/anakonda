@@ -6,8 +6,7 @@ from kubernetes import client
 
 
 Task = mapper.classes.tasks
-job_v1_client = client.BatchV1Api()
-
+core_v1_client = client.CoreV1Api()                 
 class TaskJobController:
    
      def run_task(task_id):          
@@ -45,26 +44,31 @@ class TaskJobController:
                    task.result = container_result
                    db.commit()
               if task.runtime == "kubernetes" :
-                   job = job_v1_client.create_namespaced_job(
+                    pod = core_v1_client.create_namespaced_pod(
                         namespace=task.namespace,
-                        body=client.V1Job(
+                        body=client.V1Pod(
                              metadata=client.V1ObjectMeta(
                                   generate_name=task.name+"-",
                                   labels={"controller":"anakonda"}
-                                  ),
-                             spec=client.V1JobSpec(
-                                completions=1,
-                                parallelism=1,
-                                template=client.V1PodTemplateSpec(
-                                     metadata=client.V1ObjectMeta(),
+                                  ),                             
                                      spec=client.V1PodSpec(
                                                restart_policy="Never",
                                                containers=[client.V1Container(
                                                     name=task.name,
                                                     command=["sh","-c",task.script],
                                                     image=task.image)])
-                                   )
-                              )
-                          )
+                        )
                     )
-                   
+                    while pod.status.phase not in ["Succeeded","Failed"]:
+                        pod= core_v1_client.read_namespaced_pod(name=pod.metadata.name, namespace=task.namespace)
+                        sleep(3)
+                    pod_log=core_v1_client.read_namespaced_pod_log(name=pod.metadata.name, namespace=task.namespace)
+                    core_v1_client.delete_namespaced_pod(name=pod.metadata.name, namespace=task.namespace)
+                    if pod.status.phase ==   "Succeeded":
+                        task.status = "success"                        
+                    else :
+                        task.status = "failed"
+                    task.result=pod_log
+                    task.last_update_at = now()
+                    db.commit()
+
