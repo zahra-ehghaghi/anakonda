@@ -2,6 +2,8 @@ from os import environ
 
 
 class Config:
+    NAME = environ.get("ANAKONDA_CONTROLLER_NAME", None)
+    
     ENV = environ.get("ANAKONDA_CONTROLLER_ENV", "production")
 
     DEBUG = bool(int(environ.get("ANAKONDA_CONTROLLER_DEBUG", "0")))
