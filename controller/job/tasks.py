@@ -25,7 +25,7 @@ class TaskJobController:
               if task.runtime == "docker" :
                    container= docker.containers.run(
                         image=task.image,
-                        command=task.script,
+                        command=f"sh -c '{task.script}'" ,
                         detach = True,
                         tty=False
                    )
